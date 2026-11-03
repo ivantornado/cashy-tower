@@ -40,15 +40,15 @@ export const CASH_GRAB_Y = 26;
 export const PLAYER_W = 30;
 export const PLAYER_H = 62;
 export const GRAVITY = 2400;
-export const RUN_ACCEL = 1500;
-export const AIR_ACCEL = 1320;
-export const GROUND_FRICTION = 2200;
+export const RUN_ACCEL = 1660;
+export const AIR_ACCEL = 1460;
+export const GROUND_FRICTION = 2430;
 export const AIR_DRAG = 140;
-export const MAX_RUN = 650;
-/** A standing jump clears about 1.3 floors; a 2-floor combo jump needs roughly a third of top speed. */
-export const JUMP_BASE = 740;
-/** Extra jump speed at full run: flat out clears about 4 floors. It scales with the share of top speed, so running faster never means jumping higher. */
-export const JUMP_RUN_GAIN = 590;
+export const MAX_RUN = 720;
+/** A standing jump clears about 1.4 floors; a 2-floor combo jump needs roughly a quarter to a third of top speed. */
+export const JUMP_BASE = 770;
+/** Extra jump speed at full run: flat out clears about 4.6 floors. It scales with the share of top speed, so running faster never means jumping higher. */
+export const JUMP_RUN_GAIN = 630;
 /** Share of sideways speed kept when bouncing off a wall in mid-air. */
 export const WALL_BOUNCE = 0.9;
 export const MAX_FALL = 1500;
