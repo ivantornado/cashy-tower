@@ -1,0 +1,9 @@
+node_modules
+dist
+.DS_Store
+
+# local editor and preview settings
+/.claude/
+
+# full-size audio masters, too big to commit
+/source-audio/
