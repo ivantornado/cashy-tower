@@ -612,7 +612,7 @@ export class Renderer {
     ctx.font = `400 13px ${UI_FONT}`;
     ctx.fillStyle = C.mist;
     ctx.globalAlpha = 0.8;
-    ctx.fillText("↑ ↓ to choose  ·  SPACE to pick", VIEW_W / 2, top + MENU_ITEMS.length * 40 + 4);
+    ctx.fillText("↑ ↓ to choose  ·  SPACE to pick", VIEW_W / 2, top + MENU_ITEMS.length * 40 + 14);
     ctx.globalAlpha = 1;
   }
 
@@ -653,6 +653,13 @@ export class Renderer {
   /** The maker's name bottom left, the music credit bottom right beside the mute button. */
   private drawFooter() {
     const { ctx } = this;
+    // A soft fade behind the words, so a ledge or the ground line is never underneath them.
+    const fade = ctx.createLinearGradient(0, VIEW_H - 90, 0, VIEW_H);
+    fade.addColorStop(0, "rgba(5, 7, 13, 0)");
+    fade.addColorStop(0.55, "rgba(5, 7, 13, 0.82)");
+    fade.addColorStop(1, "rgba(5, 7, 13, 0.92)");
+    ctx.fillStyle = fade;
+    ctx.fillRect(0, VIEW_H - 90, VIEW_W, 90);
     ctx.textBaseline = "middle";
     ctx.fillStyle = C.mist;
     ctx.globalAlpha = 0.85;

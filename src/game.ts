@@ -86,7 +86,7 @@ const COMBO_WORDS: [number, string][] = [
 ];
 
 /** Ground sits near the bottom of the screen at the start. */
-const START_CAMERA = -(VIEW_H - 70);
+const START_CAMERA = -(VIEW_H - 104);
 /** Stops a jump key still held from the fall skipping the game over screen. */
 export const RESTART_DELAY = 0.8;
 
