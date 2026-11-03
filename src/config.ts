@@ -92,6 +92,9 @@ export const SCROLL_SPEEDS = [34, 58, 84, 110, 138, 168, 200, 236, 280, 330];
 /** Cashy above this share of the screen pushes the view up. */
 export const CAMERA_PUSH_LINE = 0.38;
 
+/** Where the Share on X post sends people. */
+export const SHARE_URL = "https://ivantornado.github.io/cashy-tower/";
+
 /** The speaker button, bottom right. */
 export const MUSIC_BUTTON = { x: VIEW_W - 50, y: VIEW_H - 50, r: 24 };
 export const MUSIC_VOLUME = 0.6;

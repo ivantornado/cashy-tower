@@ -19,7 +19,7 @@ import {
   WIN_MENU_DELAY,
 } from "./config";
 import { DESIGNS, type Design } from "./designs";
-import { MENU_ITEMS, RESTART_DELAY, type Game, type Popup } from "./game";
+import { RESTART_DELAY, type Game, type Popup } from "./game";
 import { floorTop, type Ledge } from "./tower";
 
 const TILE_H = 528;
@@ -584,10 +584,11 @@ export class Renderer {
     const { ctx } = this;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    MENU_ITEMS.forEach((label, i) => {
-      const y = top + i * 40;
+    const items = game.menuItems;
+    const gap = items.length > 3 ? 36 : 40;
+    items.forEach((text, i) => {
+      const y = top + i * gap;
       const chosen = i === game.menuIndex;
-      const text = i === 0 && (game.state === "over" || game.state === "won") ? "Play again" : label;
       ctx.font = chosen ? `700 25px ${UI_FONT}` : `400 20px ${UI_FONT}`;
       if (chosen) {
         ctx.globalAlpha = 0.8 + 0.2 * Math.sin(game.time * 5);
@@ -612,7 +613,7 @@ export class Renderer {
     ctx.font = `400 13px ${UI_FONT}`;
     ctx.fillStyle = C.mist;
     ctx.globalAlpha = 0.8;
-    ctx.fillText("↑ ↓ to choose  ·  SPACE to pick", VIEW_W / 2, top + MENU_ITEMS.length * 40 + 14);
+    ctx.fillText("↑ ↓ to choose  ·  SPACE to pick", VIEW_W / 2, top + items.length * gap + 14);
     ctx.globalAlpha = 1;
   }
 
@@ -646,7 +647,7 @@ export class Renderer {
       ctx.font = `700 17px ${UI_FONT}`;
       this.outlined(`New starting design unlocked: ${game.unlockedNow.join(", ")}!`, VIEW_W / 2, 448, C.note);
     }
-    if (game.overTime >= RESTART_DELAY) this.drawMenu(game, 508);
+    if (game.overTime >= RESTART_DELAY) this.drawMenu(game, 488);
     this.drawFooter();
   }
 
@@ -706,7 +707,7 @@ export class Renderer {
     }
     ctx.globalAlpha = 1;
 
-    if (game.winTime >= WIN_MENU_DELAY) this.drawMenu(game, 548, false);
+    if (game.winTime >= WIN_MENU_DELAY) this.drawMenu(game, 540, false);
     this.drawFooter();
   }
 

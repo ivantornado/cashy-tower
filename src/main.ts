@@ -56,6 +56,9 @@ try {
       game.update(STEP);
       carry -= STEP;
     }
+    // The X post opens in a new tab: it has to start from the key press, so it is picked up right here.
+    const shareUrl = game.takeShare();
+    if (shareUrl) window.open(shareUrl, "_blank", "noopener,noreferrer");
     renderer.draw(game, music.enabled);
     requestAnimationFrame(frame);
   };

@@ -15,6 +15,7 @@ import {
   POINTS_PER_FLOOR,
   SCROLL_SPEEDS,
   SCROLL_START_FLOOR,
+  SHARE_URL,
   SPEED_UP_EVERY,
   VIEW_H,
   VIEW_W,
@@ -31,8 +32,6 @@ import { Tower, floorTop, type Ledge } from "./tower";
 
 export type GameState = "title" | "playing" | "paused" | "over" | "won" | "records" | "settings";
 
-/** The three buttons on the title and game over screens. */
-export const MENU_ITEMS = ["Play", "Check records", "Settings"] as const;
 
 export type Popup = {
   text: string;
@@ -106,6 +105,8 @@ export class Game implements PlayerEvents {
   cash = 0;
   combo = { floors: 0, jumps: 0, time: 0 };
   bestComboRun = 0;
+  /** How many combos (2+ jumps in a row) this run has banked. */
+  combosRun = 0;
   popups: Popup[] = [];
   notes: Note[] = [];
   best: Best = loadBest();
@@ -126,6 +127,7 @@ export class Game implements PlayerEvents {
   unlockedNow: string[] = [];
   startDesign = 0;
   /** Where Records and Settings return to. */
+  private shareRequested = false;
   private back: "title" | "over" | "won" = "title";
   private nextMilestone = MILESTONE_EVERY;
 
@@ -197,16 +199,40 @@ export class Game implements PlayerEvents {
     this.popups = this.popups.filter((popup) => (popup.age += dt) < popup.life);
   }
 
+  /** The buttons on the current screen. Sharing only makes sense once a run has ended. */
+  get menuItems(): string[] {
+    return this.state === "over" || this.state === "won"
+      ? ["Play again", "Share on X", "Check records", "Settings"]
+      : ["Play", "Check records", "Settings"];
+  }
+
+  /** The pre-written post. Combos are left out when there were none. */
+  get shareText() {
+    const floors = `${this.highest} floor${this.highest === 1 ? "" : "s"}`;
+    const combos = this.combosRun > 0 ? ` with ${this.combosRun} combo${this.combosRun === 1 ? "" : "s"}` : "";
+    return `I jumped ${floors}${combos} on Cashy Tower. How high can you go?`;
+  }
+
+  /** Hands over the X link once after Share on X is picked, for the page to open. */
+  takeShare(): string | null {
+    if (!this.shareRequested) return null;
+    this.shareRequested = false;
+    return `https://x.com/intent/post?text=${encodeURIComponent(this.shareText)}&url=${encodeURIComponent(SHARE_URL)}`;
+  }
+
   private updateMenu() {
+    const items = this.menuItems;
     const move = this.input.takeMove();
-    if (move) this.menuIndex = (this.menuIndex + move + MENU_ITEMS.length) % MENU_ITEMS.length;
+    if (move) this.menuIndex = (this.menuIndex + move + items.length) % items.length;
     if (!this.input.takeSelect()) return;
     // A jump key still held from the fall must not skip the game over screen, and the ending gets its moment.
     if (this.state === "over" && this.overTime < RESTART_DELAY) return;
     if (this.state === "won" && this.winTime < WIN_MENU_DELAY) return;
 
-    if (this.menuIndex === 0) this.start();
-    else if (this.menuIndex === 1) this.open("records");
+    const choice = items[this.menuIndex];
+    if (choice.startsWith("Play")) this.start();
+    else if (choice === "Share on X") this.shareRequested = true;
+    else if (choice === "Check records") this.open("records");
     else {
       this.settingsIndex = this.startDesign;
       this.open("settings");
@@ -244,6 +270,7 @@ export class Game implements PlayerEvents {
     this.cash = 0;
     this.combo = { floors: 0, jumps: 0, time: 0 };
     this.bestComboRun = 0;
+    this.combosRun = 0;
     this.popups = [];
     this.notes = [];
     this.newBest = false;
@@ -337,6 +364,7 @@ export class Game implements PlayerEvents {
     const { floors, jumps } = this.combo;
     this.combo = { floors: 0, jumps: 0, time: 0 };
     if (jumps < COMBO_MIN_JUMPS) return;
+    this.combosRun++;
 
     const points = floors * floors;
     this.bonus += points;
