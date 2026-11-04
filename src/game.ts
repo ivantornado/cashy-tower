@@ -349,7 +349,9 @@ export class Game implements PlayerEvents {
       this.combo.time = COMBO_TIME;
       const tier = Math.floor(this.combo.floors / COMBO_CELEBRATE_EVERY);
       if (tier > before) this.celebrateCombo(tier);
-    } else if (this.combo.jumps > 0) {
+    } else if (jumped > 0 && this.combo.jumps > 0) {
+      // Only a short hop up (one floor) breaks the chain. Landing back on the same floor, or lower,
+      // leaves the combo alone: the timer keeps running and the next big jump can still add to it.
       this.endCombo();
     }
     if (floor > this.highest) this.highest = floor;
