@@ -15,7 +15,7 @@ import {
   POINTS_PER_FLOOR,
   SCROLL_SPEEDS,
   SCROLL_START_FLOOR,
-  SHARE_URL,
+  SITE_URL,
   SPEED_UP_EVERY,
   VIEW_H,
   VIEW_W,
@@ -207,17 +207,17 @@ export class Game implements PlayerEvents {
   }
 
   /** The pre-written post. Combos are left out when there were none. */
+  /** The pre-written post (Base City brief, update 2). Well under X's 280 characters. */
   get shareText() {
     const floors = `${this.highest} floor${this.highest === 1 ? "" : "s"}`;
-    const combos = this.combosRun > 0 ? ` with ${this.combosRun} combo${this.combosRun === 1 ? "" : "s"}` : "";
-    return `I jumped ${floors}${combos} on Cashy Tower. How high can you go?`;
+    return `I climbed ${floors} in Cashy Tower 🏙️\n\nBuilt on @base 🔵\nCash in. MSTR out. @feeldotcash\n\n${SITE_URL}/arcade/`;
   }
 
   /** Hands over the X link once after Share on X is picked, for the page to open. */
   takeShare(): string | null {
     if (!this.shareRequested) return null;
     this.shareRequested = false;
-    return `https://x.com/intent/post?text=${encodeURIComponent(this.shareText)}&url=${encodeURIComponent(SHARE_URL)}`;
+    return `https://x.com/intent/post?text=${encodeURIComponent(this.shareText)}`;
   }
 
   private updateMenu() {
