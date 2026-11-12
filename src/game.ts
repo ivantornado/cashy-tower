@@ -210,7 +210,7 @@ export class Game implements PlayerEvents {
   /** The pre-written post (Base City brief, update 2). Well under X's 280 characters. */
   get shareText() {
     const floors = `${this.highest} floor${this.highest === 1 ? "" : "s"}`;
-    return `I climbed ${floors} in Cashy Tower 🏙️\n\nBuilt on @base 🔵\nCash in. MSTR out. @feeldotcash\n\n${SITE_URL}/arcade/`;
+    return `I climbed ${floors} in Cashy Tower 🏙️\n\nBuilt on @base 🔵\nCash in. NVDA out. @feeldotcash\n\n${SITE_URL}/arcade/`;
   }
 
   /** Hands over the X link once after Share on X is picked, for the page to open. */
