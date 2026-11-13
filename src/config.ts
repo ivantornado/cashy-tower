@@ -92,8 +92,8 @@ export const SCROLL_SPEEDS = [34, 58, 84, 110, 138, 168, 200, 236, 280, 330];
 /** Cashy above this share of the screen pushes the view up. */
 export const CAMERA_PUSH_LINE = 0.38;
 
-/** The Cashy website. The Share on X post links to its Arcade page. TODO: real domain (ask Ivan). */
-export const SITE_URL = "https://ivantornado.github.io/cashy-site";
+/** The Cashy website. The Share on X post links to its Arcade page. */
+export const SITE_URL = "https://cashy.world";
 
 /** The speaker button, bottom right. */
 export const MUSIC_BUTTON = { x: VIEW_W - 50, y: VIEW_H - 50, r: 24 };
